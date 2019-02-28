@@ -1,6 +1,6 @@
 # IPsec VPN 服务器一键安装脚本
 
-[![Build Status](https://travis-ci.org/hwdsl2/setup-ipsec-vpn.svg?branch=master)](https://travis-ci.org/hwdsl2/setup-ipsec-vpn) [![GitHub Stars](https://img.shields.io/github/stars/hwdsl2/setup-ipsec-vpn.svg?maxAge=86400)](https://github.com/hwdsl2/setup-ipsec-vpn/stargazers) [![Docker Stars](https://img.shields.io/docker/stars/hwdsl2/ipsec-vpn-server.svg?maxAge=86400)](https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/README-zh.md) [![Docker Pulls](https://img.shields.io/docker/pulls/hwdsl2/ipsec-vpn-server.svg?maxAge=86400)](https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/README-zh.md)
+[![Build Status](https://img.shields.io/travis/hwdsl2/setup-ipsec-vpn.svg?maxAge=1200)](https://travis-ci.org/hwdsl2/setup-ipsec-vpn) [![GitHub Stars](https://img.shields.io/github/stars/hwdsl2/setup-ipsec-vpn.svg?maxAge=86400)](https://github.com/hwdsl2/setup-ipsec-vpn/stargazers) [![Docker Stars](https://img.shields.io/docker/stars/hwdsl2/ipsec-vpn-server.svg?maxAge=86400)](https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/README-zh.md) [![Docker Pulls](https://img.shields.io/docker/pulls/hwdsl2/ipsec-vpn-server.svg?maxAge=86400)](https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/README-zh.md)
 
 使用 Linux 脚本一键快速搭建自己的 IPsec VPN 服务器。支持 IPsec/L2TP 和 Cisco IPsec 协议，可用于 Ubuntu/Debian/CentOS 系统。你只需提供自己的 VPN 登录凭证，然后运行脚本自动完成安装。
 
@@ -8,7 +8,7 @@ IPsec VPN 可以加密你的网络流量，以防止在通过因特网传送时�
 
 我们将使用 <a href="https://libreswan.org/" target="_blank">Libreswan</a> 作为 IPsec 服务器，以及 <a href="https://github.com/xelerance/xl2tpd" target="_blank">xl2tpd</a> 作为 L2TP 提供者。
 
-<a href="https://blog.ls20.com/ipsec-l2tp-vpn-auto-setup-for-ubuntu-12-04-on-amazon-ec2/" target="_blank">**&raquo; 相关教程： IPsec VPN Server Auto Setup with Libreswan**</a>
+<a href="https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/README-zh.md" target="_blank">**&raquo; 另见： Docker 上的 IPsec VPN 服务器**</a>
 
 *其他语言版本: [English](README.md), [简体中文](README-zh.md).*
 
@@ -53,29 +53,30 @@ wget https://git.io/vpnsetup -O vpnsetup.sh && sudo sh vpnsetup.sh
 - 封装所有的 VPN 流量在 UDP 协议，不需要 ESP 协议支持
 - 可直接作为 Amazon EC2 实例创建时的用户数据使用
 - 包含 `sysctl.conf` 优化设置，以达到更佳的传输性能
-- 已测试： Ubuntu 16.04/14.04， Debian 9/8 和 CentOS 7/6
+- 已测试： Ubuntu 18.04/16.04/14.04, Debian 9/8 和 CentOS 7/6
 
 ## 系统要求
 
-一个新创建的 <a href="https://aws.amazon.com/ec2/" target="_blank">Amazon EC2</a> 实例，使用这些映像 (AMIs):
-- <a href="https://cloud-images.ubuntu.com/locator/" target="_blank">Ubuntu 16.04 (Xenial) or 14.04 (Trusty)</a>
+一个新创建的 <a href="https://aws.amazon.com/ec2/" target="_blank">Amazon EC2</a> 实例，使用这些映像之一：
+- <a href="https://cloud-images.ubuntu.com/locator/" target="_blank">Ubuntu 18.04 (Bionic), 16.04 (Xenial) or 14.04 (Trusty)</a>
 - <a href="https://wiki.debian.org/Cloud/AmazonEC2Image" target="_blank">Debian 9 (Stretch) or 8 (Jessie)</a>
 - <a href="https://aws.amazon.com/marketplace/pp/B00O7WM7QW" target="_blank">CentOS 7 (x86_64) with Updates</a>
 - <a href="https://aws.amazon.com/marketplace/pp/B00NQAYLWO" target="_blank">CentOS 6 (x86_64) with Updates</a>
+- <a href="https://aws.amazon.com/partners/redhat/faqs/" target="_blank">Red Hat Enterprise Linux (RHEL) 7 or 6</a>
 
 请参见 <a href="https://blog.ls20.com/ipsec-l2tp-vpn-auto-setup-for-ubuntu-12-04-on-amazon-ec2/#vpnsetup" target="_blank">详细步骤</a> 以及 <a href="https://aws.amazon.com/cn/ec2/pricing/" target="_blank">EC2 定价细节</a>。
 
 **-或者-**
 
-一个专用服务器，或者基于 KVM/Xen 的虚拟专用服务器 (VPS)，全新安装以上操作系统之一。OpenVZ VPS 不受支持，用户可以另外尝试比如 <a href="https://shadowsocks.org" target="_blank">Shadowsocks</a> 或者 <a href="https://github.com/Nyr/openvpn-install" target="_blank">OpenVPN</a>。
+一个专用服务器，或者基于 KVM/Xen 的虚拟专用服务器 (VPS)，全新安装以上操作系统之一。OpenVZ VPS 不受支持，用户可以另外尝试 <a href="https://github.com/Nyr/openvpn-install" target="_blank">OpenVPN</a>。
 
-这也包括各种公共云服务中的 Linux 虚拟机，比如 <a href="https://blog.ls20.com/digitalocean" target="_blank">DigitalOcean</a>, <a href="https://blog.ls20.com/vultr" target="_blank">Vultr</a>, <a href="https://blog.ls20.com/linode" target="_blank">Linode</a>, <a href="https://cloud.google.com/compute/" target="_blank">Google Compute Engine</a>, <a href="https://amazonlightsail.com" target="_blank">Amazon Lightsail</a>, <a href="https://azure.microsoft.com" target="_blank">Microsoft Azure</a>, <a href="https://www.ibm.com/cloud-computing/bluemix/virtual-servers" target="_blank">IBM Bluemix</a>, <a href="https://www.ovh.com/us/vps/" target="_blank">OVH</a> 和 <a href="https://www.rackspace.com" target="_blank">Rackspace</a>。
+这也包括各种公共云服务中的 Linux 虚拟机，比如 <a href="https://blog.ls20.com/digitalocean" target="_blank">DigitalOcean</a>, <a href="https://blog.ls20.com/vultr" target="_blank">Vultr</a>, <a href="https://blog.ls20.com/linode" target="_blank">Linode</a>, <a href="https://cloud.google.com/compute/" target="_blank">Google Compute Engine</a>, <a href="https://aws.amazon.com/lightsail/" target="_blank">Amazon Lightsail</a>, <a href="https://azure.microsoft.com" target="_blank">Microsoft Azure</a>, <a href="https://www.ibm.com/cloud/virtual-servers" target="_blank">IBM Cloud</a>, <a href="https://www.ovh.com/world/vps/" target="_blank">OVH</a> 和 <a href="https://www.rackspace.com" target="_blank">Rackspace</a>。
 
 <a href="azure/README-zh.md" target="_blank"><img src="docs/images/azure-deploy-button.png" alt="Deploy to Azure" /></a> <a href="http://dovpn.carlfriess.com/" target="_blank"><img src="docs/images/do-install-button.png" alt="Install on DigitalOcean" /></a> <a href="https://www.linode.com/stackscripts/view/37239" target="_blank"><img src="docs/images/linode-deploy-button.png" alt="Deploy to Linode" /></a>
 
 <a href="https://blog.ls20.com/ipsec-l2tp-vpn-auto-setup-for-ubuntu-12-04-on-amazon-ec2/#gettingavps" target="_blank">**&raquo; 我想建立并使用自己的 VPN ，但是没有可用的服务器**</a>
 
-高级用户可以在 $35 <a href="https://blog.elasticbyte.net/setting-up-a-native-cisco-ipsec-vpn-server-using-a-raspberry-pi/" target="_blank">Raspberry Pi 3</a> 上搭建 VPN 服务器。
+高级用户可以在一个 $35 的 <a href="https://www.raspberrypi.org" target="_blank">Raspberry Pi 3</a> 上搭建 VPN 服务器。详见以下教程： <a href="https://www.stewright.me/2018/07/create-a-raspberry-pi-vpn-server-using-l2tpipsec/" target="_blank">[1]</a> <a href="https://blog.elasticbyte.net/setting-up-a-native-cisco-ipsec-vpn-server-using-a-raspberry-pi/" target="_blank">[2]</a>。
 
 :warning: **不要** 在你的 PC 或者 Mac 上运行这些脚本！它们只能用在服务器上！
 
@@ -102,6 +103,8 @@ nano -w vpnsetup.sh
 sudo sh vpnsetup.sh
 ```
 
+**注：** 一个安全的 IPsec PSK 应该至少包含 20 个随机字符。
+
 **选项 3:** 将你自己的 VPN 登录凭证定义为环境变量：
 
 ```bash
@@ -110,7 +113,8 @@ sudo sh vpnsetup.sh
 wget https://git.io/vpnsetup -O vpnsetup.sh && sudo \
 VPN_IPSEC_PSK='你的IPsec预共享密钥' \
 VPN_USER='你的VPN用户名' \
-VPN_PASSWORD='你的VPN密码' sh vpnsetup.sh
+VPN_PASSWORD='你的VPN密码' \
+sh vpnsetup.sh
 ```
 
 **注：** 如果无法通过 `wget` 下载，你也可以打开 <a href="vpnsetup.sh" target="_blank">vpnsetup.sh</a> (或者 <a href="vpnsetup_centos.sh" target="_blank">vpnsetup_centos.sh</a>)，然后点击右方的 **`Raw`** 按钮。按快捷键 `Ctrl-A` 全选， `Ctrl-C` 复制，然后粘贴到你喜欢的编辑器。
@@ -129,7 +133,7 @@ VPN_PASSWORD='你的VPN密码' sh vpnsetup.sh
 
 <a href="docs/clients-xauth-zh.md" target="_blank">**配置 IPsec/XAuth ("Cisco IPsec") VPN 客户端**</a>
 
-<a href="docs/ikev2-howto-zh.md" target="_blank">**如何配置 IKEv2 VPN: Windows 和 Android**</a>
+<a href="docs/ikev2-howto-zh.md" target="_blank">**分步指南：如何配置 IKEv2 VPN**</a>
 
 如果在连接过程中遇到错误，请参见 <a href="docs/clients-zh.md#故障排除" target="_blank">故障排除</a>。
 
@@ -139,19 +143,19 @@ VPN_PASSWORD='你的VPN密码' sh vpnsetup.sh
 
 *其他语言版本: [English](README.md#important-notes), [简体中文](README-zh.md#重要提示).*
 
-**Windows 用户** 在首次连接之前需要<a href="docs/clients-zh.md#windows-错误-809" target="_blank">修改一次注册表</a>，以解决 VPN 服务器 和/或 客户端与 NAT （比如家用路由器）的兼容问题。
+**Windows 用户** 在首次连接之前需要<a href="docs/clients-zh.md#windows-错误-809" target="_blank">修改注册表</a>，以解决 VPN 服务器 和/或 客户端与 NAT（比如家用路由器）的兼容问题。
 
 同一个 VPN 账户可以在你的多个设备上使用。但是由于 IPsec/L2TP 的局限性，如果需要同时连接在同一个 NAT （比如家用路由器）后面的多个设备到 VPN 服务器，你必须仅使用 <a href="docs/clients-xauth-zh.md" target="_blank">IPsec/XAuth 模式</a>。
 
-对于有外部防火墙的服务器（比如 <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html" target="_blank">EC2</a>/<a href="https://cloud.google.com/compute/docs/vpc/firewalls" target="_blank">GCE</a>），请为 VPN 打开 UDP 端口 500 和 4500。
+对于有外部防火墙的服务器（比如 <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html" target="_blank">EC2</a>/<a href="https://cloud.google.com/vpc/docs/firewalls" target="_blank">GCE</a>），请为 VPN 打开 UDP 端口 500 和 4500。阿里云用户请参见 [#433](https://github.com/hwdsl2/setup-ipsec-vpn/issues/433)。
 
-如果需要添加，修改或者删除 VPN 用户账户，请参见 <a href="docs/manage-users-zh.md" target="_blank">管理 VPN 用户</a>。
+如果需要添加，修改或者删除 VPN 用户账户，请参见 <a href="docs/manage-users-zh.md" target="_blank">管理 VPN 用户</a>。该文档包含辅助脚本，以方便管理 VPN 用户。
 
-在 VPN 已连接时，客户端配置为使用 <a href="https://developers.google.com/speed/public-dns/" target="_blank">Google Public DNS</a>。如果偏好其它的域名解析服务，请编辑 `/etc/ppp/options.xl2tpd` 和 `/etc/ipsec.conf` 并替换 `8.8.8.8` 和 `8.8.4.4`。然后重启服务器。
+在 VPN 已连接时，客户端配置为使用 <a href="https://developers.google.com/speed/public-dns/" target="_blank">Google Public DNS</a>。如果偏好其它的域名解析服务，编辑 `/etc/ppp/options.xl2tpd` 和 `/etc/ipsec.conf` 并替换 `8.8.8.8` 和 `8.8.4.4`，然后重启服务器。高级用户可以在运行 VPN 脚本时定义 `VPN_DNS_SRV1` 和 `VPN_DNS_SRV2`（可选）。
 
-使用 L2TP 内核支持有助于提高 IPsec/L2TP 性能。它在以下系统上可用： Ubuntu 16.04, Debian 9, CentOS 7 和 6。 Ubuntu 16.04 用户需要安装 `` linux-image-extra-`uname -r` `` 软件包并且重启 `xl2tpd` 服务。
+使用内核支持有助于提高 IPsec/L2TP 性能。它在以下系统上可用： Ubuntu 18.04/16.04, Debian 9 和 CentOS 7/6. Ubuntu 系统需要安装 `linux-modules-extra-$(uname -r)`（或者 `linux-image-extra`），然后运行 `service xl2tpd restart`。
 
-如果需要在安装后更改 IPTables 规则，请编辑 `/etc/iptables.rules` 和/或 `/etc/iptables/rules.v4` (Ubuntu/Debian)，或者 `/etc/sysconfig/iptables` (CentOS)。然后重启服务器。
+如果需要在安装后更改 IPTables 规则，请编辑 `/etc/iptables.rules` 和/或 `/etc/iptables/rules.v4` (Ubuntu/Debian)，或者 `/etc/sysconfig/iptables` (CentOS/RHEL)。然后重启服务器。
 
 在使用 `IPsec/L2TP` 连接时，VPN 服务器在虚拟网络 `192.168.42.0/24` 内具有 IP `192.168.42.1`。
 
@@ -171,7 +175,7 @@ wget https://git.io/vpnupgrade-centos -O vpnupgrade.sh
 ## 问题和反馈
 
 - 有问题需要提问？请先搜索已有的留言，在 <a href="https://gist.github.com/hwdsl2/9030462#comments" target="_blank">这个 Gist</a> 以及 <a href="https://blog.ls20.com/ipsec-l2tp-vpn-auto-setup-for-ubuntu-12-04-on-amazon-ec2/#disqus_thread" target="_blank">我的博客</a>。
-- VPN 的相关问题可在 <a href="https://lists.libreswan.org/mailman/listinfo/swan" target="_blank">Libreswan</a> 或 <a href="https://lists.strongswan.org/mailman/listinfo/users" target="_blank">strongSwan</a> 邮件列表提问，或者参考这些网站： <a href="https://libreswan.org/wiki/Main_Page" target="_blank">[1]</a> <a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Securing_Virtual_Private_Networks.html" target="_blank">[2]</a> <a href="https://wiki.strongswan.org/projects/strongswan/wiki/UserDocumentation" target="_blank">[3]</a> <a href="https://wiki.gentoo.org/wiki/IPsec_L2TP_VPN_server" target="_blank">[4]</a> <a href="https://wiki.archlinux.org/index.php/L2TP/IPsec_VPN_client_setup" target="_blank">[5]</a>。
+- VPN 的相关问题可在 <a href="https://lists.libreswan.org/mailman/listinfo/swan" target="_blank">Libreswan</a> 或 <a href="https://lists.strongswan.org/mailman/listinfo/users" target="_blank">strongSwan</a> 邮件列表提问，或者参考这些网站： <a href="https://libreswan.org/wiki/Main_Page" target="_blank">[1]</a> <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/sec-securing_virtual_private_networks" target="_blank">[2]</a> <a href="https://wiki.strongswan.org/projects/strongswan/wiki/UserDocumentation" target="_blank">[3]</a> <a href="https://wiki.gentoo.org/wiki/IPsec_L2TP_VPN_server" target="_blank">[4]</a> <a href="https://wiki.archlinux.org/index.php/Openswan_L2TP/IPsec_VPN_client_setup" target="_blank">[5]</a>。
 - 如果你发现了一个可重复的程序漏洞，请提交一个 <a href="https://github.com/hwdsl2/setup-ipsec-vpn/issues?q=is%3Aissue" target="_blank">GitHub Issue</a>。
 
 ## 卸载说明
@@ -181,14 +185,13 @@ wget https://git.io/vpnupgrade-centos -O vpnupgrade.sh
 ## 另见
 
 - <a href="https://github.com/hwdsl2/docker-ipsec-vpn-server/blob/master/README-zh.md" target="_blank">IPsec VPN Server on Docker</a>
-- <a href="https://github.com/gaomd/docker-ikev2-vpn-server" target="_blank">IKEv2 VPN Server on Docker</a>
-- <a href="https://github.com/jlund/streisand" target="_blank">Streisand</a>
 - <a href="https://github.com/trailofbits/algo" target="_blank">Algo VPN</a>
+- <a href="https://github.com/StreisandEffect/streisand" target="_blank">Streisand</a>
 - <a href="https://github.com/Nyr/openvpn-install" target="_blank">OpenVPN Install</a>
 
 ## 授权协议
 
-版权所有 (C) 2014-2017 <a href="https://www.linkedin.com/in/linsongui" target="_blank">Lin Song</a> <a href="https://www.linkedin.com/in/linsongui" target="_blank"><img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png" width="160" height="25" border="0" alt="View my profile on LinkedIn"></a>   
+版权所有 (C) 2014-2019 <a href="https://www.linkedin.com/in/linsongui" target="_blank">Lin Song</a> <a href="https://www.linkedin.com/in/linsongui" target="_blank"><img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png" width="160" height="25" border="0" alt="View my profile on LinkedIn"></a>   
 基于 <a href="https://github.com/sarfata/voodooprivacy" target="_blank">Thomas Sarlandie 的工作</a> (版权所有 2012)
 
 这个项目是以 <a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">知识共享署名-相同方式共享3.0</a> 许可协议授权。   
