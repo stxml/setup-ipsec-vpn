@@ -25,21 +25,34 @@
       "type": "string",
       "allowedValues": [
         "ubuntu1604",
-        "debian9"
+        "debian8"
       ],
-      "defaultValue": "debian9",
+      "defaultValue": "debian8",
       "metadata": {
-        "description": "OS to use. Debian 9 or Ubuntu 16.04 LTS"
+        "description": "OS to use. Debian 8 or Ubuntu 16.04 LTS"
       }
     },
     "VMSize": {
       "type": "string",
-      "defaultValue": "Standard_B1s",
+      "defaultValue": "Basic_A0",
       "allowedValues": [
-        "Standard_B1s",
-        "Standard_B1ms",
-        "Standard_B2s",
-        "Standard_B2ms"
+        "Basic_A0",
+        "Basic_A1",
+        "Basic_A2",
+        "Basic_A3",
+        "Basic_A4",
+        "Standard_A0",
+        "Standard_A1",
+        "Standard_A2",
+        "Standard_A3",
+        "Standard_A4",
+        "Standard_A5",
+        "Standard_A6",
+        "Standard_A7",
+        "Standard_D1",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4"
       ],
       "metadata": {
         "description": "The size of the Virtual Machine."
@@ -64,10 +77,10 @@
       "sku": "16.04-LTS",
       "version": "latest"
     },
-    "debian9": {
+    "debian8": {
       "publisher": "credativ",
       "offer": "Debian",
-      "sku": "9",
+      "sku": "8",
       "version": "latest"
     },
     "installScriptURL": "https://raw.githubusercontent.com/hwdsl2/setup-ipsec-vpn/master/azure/install.sh",
